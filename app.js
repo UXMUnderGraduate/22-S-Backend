@@ -1,16 +1,33 @@
-import express from "express";
-import morgan from "morgan";
+const express = require("express");
 
-import indexRouter from "./routes/index.js";
+const dotenv = require("dotenv");
+dotenv.config();
+const morgan = require("morgan");
+const { sequelize } = require("./models");
+const seed = require("./seeders");
 
 const app = express();
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 5000);
+
+const force = true;
+sequelize
+  .sync({ force })
+  .then(() => {
+    if (force) {
+      // db 초기화 설정(sync force: true) 시 자동 seed (sequelize db:seed:all과 동일)
+      seed(sequelize.getQueryInterface());
+    }
+  })
+  .then(() => {
+    console.log("데이터베이스 연결 성공");
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-app.use("/", indexRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);

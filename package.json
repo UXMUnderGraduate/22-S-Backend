@@ -9,28 +9,31 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SeonjaeHyeon/22-S-Backend.git"
+    "url": "git+https://github.com/UXMUnderGraduate/22-S-Backend.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/SeonjaeHyeon/22-S-Backend/issues"
+    "url": "https://github.com/UXMUnderGraduate/22-S-Backend/issues"
   },
-  "homepage": "https://github.com/SeonjaeHyeon/22-S-Backend#readme",
+  "homepage": "https://github.com/UXMUnderGraduate/22-S-Backend#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "ipfs-core": "^0.15.4",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
+    "mysql2": "^2.3.3",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "sequelize": "^6.21.3",
     "web3": "^1.7.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.19"
-  },
-  "type": "module"
+  }
 }
