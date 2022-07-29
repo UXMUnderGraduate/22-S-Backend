@@ -6,6 +6,8 @@ const morgan = require("morgan");
 const { sequelize } = require("./models");
 const seed = require("./seeders");
 
+const userRouter = require("./routes/user");
+
 const app = express();
 app.set("port", process.env.PORT || 5000);
 
@@ -28,6 +30,8 @@ sequelize
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use("/user", userRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
