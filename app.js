@@ -3,8 +3,11 @@ const express = require("express");
 const dotenv = require("dotenv");
 dotenv.config();
 const morgan = require("morgan");
+const passport = require("./passport");
 const { sequelize } = require("./models");
 const seed = require("./seeders");
+
+const authRouter = require("./routes/auth");
 
 const app = express();
 app.set("port", process.env.PORT || 5000);
@@ -28,6 +31,9 @@ sequelize
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(passport.initialize());
+
+app.use("/api/v1/auth", authRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
