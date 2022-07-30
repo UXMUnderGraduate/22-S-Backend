@@ -1,5 +1,6 @@
 const passport = require("passport");
 const localStrategy = require("./localStrategy");
+const JwtStrategy = require("./JwtStrategy");
 const User = require("../models/User");
 
 passport.serializeUser((user, done) => {
@@ -15,5 +16,6 @@ passport.deserializeUser((email, done) => {
 });
 
 passport.use(localStrategy);
+passport.use(JwtStrategy);
 
 module.exports = passport;
