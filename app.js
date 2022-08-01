@@ -7,7 +7,7 @@ const passport = require("./passport");
 const { sequelize } = require("./models");
 const seed = require("./seeders");
 
-<<<<<<< HEAD
+const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 
 const app = express();
