@@ -3,10 +3,15 @@ const express = require("express");
 const dotenv = require("dotenv");
 dotenv.config();
 const morgan = require("morgan");
+const passport = require("./passport");
 const { sequelize } = require("./models");
 const seed = require("./seeders");
 
+<<<<<<< HEAD
 const userRouter = require("./routes/user");
+=======
+const authRouter = require("./routes/auth");
+>>>>>>> b7989b0166be56946795d4bbfb32af8e0001e008
 
 const app = express();
 app.set("port", process.env.PORT || 5000);
@@ -30,6 +35,9 @@ sequelize
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(passport.initialize());
+
+app.use("/api/v1/auth", authRouter);
 
 app.use("/user", userRouter);
 
