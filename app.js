@@ -9,9 +9,6 @@ const seed = require("./seeders");
 
 <<<<<<< HEAD
 const userRouter = require("./routes/user");
-=======
-const authRouter = require("./routes/auth");
->>>>>>> b7989b0166be56946795d4bbfb32af8e0001e008
 
 const app = express();
 app.set("port", process.env.PORT || 5000);
