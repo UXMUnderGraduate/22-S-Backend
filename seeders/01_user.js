@@ -27,6 +27,15 @@ module.exports = {
         nickname: "아이유",
         wallet: "0xC788797F401A4e0AB68B0Ea1Ed855a4c7dF6cdfb",
       },
+      {
+        id: 2,
+        name: "이선웅",
+        email: "lsu123@google.com",
+        type: "Producer",
+        password: hash,
+        nickname: "에픽하이",
+        wallet: "0xa5FA319a89B863c0a56a013c290b7a7DeaE7337f",
+      },
     ];
 
     await queryInterface.bulkInsert("user", bulk, {});
