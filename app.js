@@ -8,6 +8,7 @@ const { sequelize } = require("./models");
 const seed = require("./seeders");
 
 const authRouter = require("./routes/auth");
+const userRouter = require("./routes/user");
 const musicRouter = require("./routes/music");
 
 const app = express();
@@ -36,6 +37,7 @@ app.use(passport.initialize());
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/music", musicRouter);
+app.use("/api/v1/user", userRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
