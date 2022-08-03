@@ -15,7 +15,7 @@ module.exports = {
       {
         id: 1,
         user_id: 1,
-        name: "좋은 날",
+        title: "좋은 날",
         genre: "Pop",
         artist: "아이유",
         cid1: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUcyuvibCh",
@@ -24,7 +24,7 @@ module.exports = {
       {
         id: 2,
         user_id: 1,
-        name: "싫은 날",
+        title: "싫은 날",
         genre: "Pop",
         artist: "아이유",
         cid1: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUcyuvibCh",
@@ -33,7 +33,7 @@ module.exports = {
       {
         id: 3,
         user_id: 2,
-        name: "비 오는 날 듣기 좋은 노래",
+        title: "비 오는 날 듣기 좋은 노래",
         genre: "Hip-Hop",
         artist: "에픽하이",
         cid1: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUcyuvibCh",

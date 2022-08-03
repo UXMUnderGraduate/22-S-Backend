@@ -19,7 +19,7 @@ router.get("/", isLoggedIn, async (req, res, next) => {
   for (const keyword of search.split(" ")) {
     if (keyword !== "") {
       operators.push({
-        name: {
+        title: {
           [Op.substring]: keyword,
         },
       });
