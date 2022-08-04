@@ -1,9 +1,40 @@
 const express = require("express");
+const { Op } = require("sequelize");
+const { isLoggedIn } = require("../middlewares/auth");
 const User = require("../models/User");
 
-const { isLoggedIn } = require("../middlewares/auth");
-
 const router = express.Router();
+
+// 유저 검색
+router.get("/", isLoggedIn, async (req, res, next) => {
+  const { search } = req.query;
+  if (search === undefined) {
+    return next();
+  }
+
+  try {
+    const users = await User.findAll({
+      where: {
+        email: {
+          [Op.like]: `%${search}%`,
+        },
+      },
+      attributes: ["id", "email", "nickname"],
+    });
+    const data = users.map((record) => record.toJSON());
+    console.log(data);
+    return res.json({
+      message: "유저 조회 성공",
+      data,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(400).json({
+      message: "유저 검색 실패",
+      data: {},
+    });
+  }
+});
 
 // 마이페이지 - 내 정보 조회
 router.get("/", isLoggedIn, async (req, res, next) => {
@@ -24,7 +55,7 @@ router.get("/", isLoggedIn, async (req, res, next) => {
         type,
         nickname,
         wallet,
-      }
+      },
     });
   } catch (err) {
     console.error(err);
