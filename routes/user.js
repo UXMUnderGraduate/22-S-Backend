@@ -69,7 +69,9 @@ router.get("/", isLoggedIn, async (req, res, next) => {
 router.put("/", isLoggedIn, async (req, res, next) => {
   const { email, name, nickname } = req.body;
 
-  let data = { name };
+  if (name) {
+    data.name = name;
+  }
   if (email) {
     data.email = email;
   }
