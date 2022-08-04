@@ -66,4 +66,36 @@ router.get("/", isLoggedIn, async (req, res, next) => {
   }
 });
 
+router.put("/", isLoggedIn, async (req, res, next) => {
+  const { email, name, nickname } = req.body;
+
+  let data = { name };
+  if (email) {
+    data.email = email;
+  }
+  if (nickname) {
+    data.nickname = nickname;
+  }
+
+  try {
+    await User.update(data, {
+      where: {
+        id: req.user.id,
+      },
+    });
+
+    return res.json({
+      message: "회원 정보 수정 성공",
+      data: {
+        id: req.user.id,
+        name: name,
+        nickname: nickname,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+});
+
 module.exports = router;
