@@ -8,11 +8,8 @@ const { sequelize } = require("./models");
 const seed = require("./seeders");
 
 const authRouter = require("./routes/auth");
-<<<<<<< HEAD
 const userRouter = require("./routes/user");
-=======
 const musicRouter = require("./routes/music");
->>>>>>> 9856cdb134e2e65ce0e94d66c50b4e8023ae9267
 
 const app = express();
 app.set("port", process.env.PORT || 5000);
@@ -40,6 +37,7 @@ app.use(passport.initialize());
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/music", musicRouter);
+app.use("/api/v1/user", userRouter);
 
 app.use("/user", userRouter);
 
