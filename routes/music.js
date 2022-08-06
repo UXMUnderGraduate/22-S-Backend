@@ -59,4 +59,34 @@ router.get("/", isLoggedIn, async (req, res, next) => {
   }
 });
 
+router.get("/:id", async (req, res, next) => {
+  const id = req.params.id;
+
+  try {
+    const music = await Music.findOne({
+      where: { id: id },
+      attributes: ["title", "genre", "artist", "cid1", "cid2"],
+    });
+    const { title, genre, artist, cid1, cid2 } = music;
+
+    return res.json({
+      message: "음원 상세 조회 성공",
+      data: {
+        id: id,
+        title,
+        genre,
+        artist,
+        cid1,
+        cid2,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(400).json({
+      message: "음원 상세 조회 실패",
+      data: {},
+    });
+  }
+});
+
 module.exports = router;
