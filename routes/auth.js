@@ -20,7 +20,7 @@ router.post("/signup", isNotLoggedIn, async (req, res, next) => {
     }
     console.info("___User.create(): " + name);
     const hash = await bcrypt.hash(password, salt);
-    await User.create({
+    const newUser = await User.create({
       email,
       password: hash,
       name,
@@ -31,7 +31,7 @@ router.post("/signup", isNotLoggedIn, async (req, res, next) => {
     return res.status(201).json({
       message: "회원가입 성공",
       data: {
-        id: nickname,
+        id: newUser.getDataValue("id"),
         name: name,
       },
     });
