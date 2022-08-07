@@ -39,6 +39,33 @@ module.exports = {
         cid1: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUcyuvibCh",
         cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
       },
+      {
+        id: 4,
+        user_id: 3,
+        title: "LOVE me",
+        genre: "Hip-Hop",
+        artist: "쁘리티민수",
+        cid1: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUcyuvibCh",
+        cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
+      },
+      {
+        id: 5,
+        user_id: 3,
+        title: "민수는 혼란스럽다",
+        genre: "Pop",
+        artist: "쁘리티민수",
+        cid1: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUcyuvibCh",
+        cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
+      },
+      {
+        id: 6,
+        user_id: 4,
+        title: "마지막으로",
+        genre: "Hip-Hop",
+        artist: "큐티빠띠져니><",
+        cid1: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUcyuvibCh",
+        cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
+      },
     ];
 
     await queryInterface.bulkInsert("music", bulk, {});
