@@ -33,7 +33,7 @@ router.delete("/:id", isLoggedIn, async (req, res) => {
   } catch (err) {
     console.error(err);
     return res.status(400).json({
-      message: "음원 삭제 실패",
+      message: "음원 삭제 실패 - 권한이 없습니다.",
       data: {},
     });
   }
