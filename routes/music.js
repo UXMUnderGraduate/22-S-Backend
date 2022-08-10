@@ -2,6 +2,7 @@ const express = require("express");
 const { Op } = require("sequelize");
 const { isLoggedIn } = require("../middlewares/auth");
 const Music = require("../models/Music");
+const User = require("../models/User");
 const IPFS = require("ipfs-core");
 
 const router = express.Router();
@@ -96,7 +97,7 @@ router.get("/chart", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", isLoggedIn, async (req, res, next) => {
   const id = req.params.id;
 
   try {
@@ -123,16 +124,39 @@ router.get("/:id", async (req, res, next) => {
     const image = Buffer.concat(chunks);
     const encode = Buffer.from(image).toString('base64');
 
+    const composerId = JSON.parse(songInfo).composerId;
+    const composers = [];
+    for(let i in composerId) {
+      const composer = await User.findOne({
+        where: {id: composerId[i]},
+      });
+      composers.push(composer.nickname);
+    }
+
+    const songWriterId = JSON.parse(songInfo).songWriterId;
+    const songWriters = [];
+    for(let i in songWriterId) {
+      const songWriter = await User.findOne({
+        where: {id: songWriterId[i]},
+      });
+      songWriters.push(songWriter.nickname);
+    }
+
     return res.json({
       message: "음원 상세 조회 성공",
       data: {
         id: id,
         title,
+        artistId: JSON.parse(songInfo).artistId,
         artist,
         album: JSON.parse(songInfo).album,
         image: encode,
         lyrics: JSON.parse(songInfo).lyrics,
         genre,
+        composerId,
+        composer: composers,
+        songWriterId,
+        songWriter: songWriters,
       },
     });
   } catch (err) {
