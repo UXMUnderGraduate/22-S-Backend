@@ -122,22 +122,22 @@ router.get("/:id", isLoggedIn, async (req, res, next) => {
       chunks.push(chunk);
     }
     const image = Buffer.concat(chunks);
-    const encode = Buffer.from(image).toString('base64');
+    const encode = Buffer.from(image).toString("base64");
 
     const composerId = JSON.parse(songInfo).composerId;
     const composers = [];
-    for(let i in composerId) {
+    for (let i in composerId) {
       const composer = await User.findOne({
-        where: {id: composerId[i]},
+        where: { id: composerId[i] },
       });
       composers.push(composer.nickname);
     }
 
     const songWriterId = JSON.parse(songInfo).songWriterId;
     const songWriters = [];
-    for(let i in songWriterId) {
+    for (let i in songWriterId) {
       const songWriter = await User.findOne({
-        where: {id: songWriterId[i]},
+        where: { id: songWriterId[i] },
       });
       songWriters.push(songWriter.nickname);
     }
