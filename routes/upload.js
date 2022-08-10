@@ -17,7 +17,7 @@ router.delete("/:id", isLoggedIn, async (req, res) => {
 
     if (music.user_id !== userId) {
       return res.status(403).json({
-        message: "곡을 등록한 사용자와 삭제하려는 사용자가 다름",
+        message: "음원 삭제 실패 - 권한이 없습니다.",
         data: {},
       });
     }
@@ -33,7 +33,7 @@ router.delete("/:id", isLoggedIn, async (req, res) => {
   } catch (err) {
     console.error(err);
     return res.status(400).json({
-      message: "음원 삭제 실패 - 권한이 없습니다.",
+      message: "음원 삭제 실패",
       data: {},
     });
   }
