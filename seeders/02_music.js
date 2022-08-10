@@ -20,6 +20,8 @@ module.exports = {
         artist: "아이유",
         cid1: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUcyuvibCh",
         cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
+        cid3: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihZd",
+        sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1a2",
       },
       {
         id: 2,
@@ -29,6 +31,8 @@ module.exports = {
         artist: "아이유",
         cid1: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUcyuvibCh",
         cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
+        cid3: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihZd",
+        sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1a2",
       },
       {
         id: 3,
@@ -38,6 +42,8 @@ module.exports = {
         artist: "에픽하이",
         cid1: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUcyuvibCh",
         cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
+        cid3: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihZd",
+        sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1a2",
       },
       {
         id: 4,
@@ -47,6 +53,8 @@ module.exports = {
         artist: "쁘리티민수",
         cid1: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUcyuvibCh",
         cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
+        cid3: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihZd",
+        sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1a2",
       },
       {
         id: 5,
@@ -56,6 +64,8 @@ module.exports = {
         artist: "쁘리티민수",
         cid1: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUcyuvibCh",
         cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
+        cid3: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihZd",
+        sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1a2",
       },
       {
         id: 6,
@@ -65,6 +75,19 @@ module.exports = {
         artist: "큐티빠띠져니><",
         cid1: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUcyuvibCh",
         cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
+        cid3: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihZd",
+        sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1a2",
+      },
+      {
+        id: 7,
+        user_id: 6,
+        title: "Make the Move",
+        genre: "Pop",
+        artist: "Chris James",
+        cid1: "QmberjDV3Y3WUbvjpMS2EEycMP9z2WcWR7iYQ79ZZgfZN5",
+        cid2: "QmaB3w6aGfsDs7CC3aeWUtPnMFHHuZ33yB6QRzKGTzB5PF",
+        cid3: "QmWivSrufNi2pVT3kxdJ9GehTDjjxwDZtjNvK1g2VPb4GV",
+        sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1ec",
       },
     ];
 

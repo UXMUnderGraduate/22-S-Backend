@@ -35,6 +35,14 @@ module.exports = class Music extends Sequelize.Model {
           type: Sequelize.STRING(255),
           allowNull: false,
         },
+        cid3: {
+          type: Sequelize.STRING(255),
+          allowNull: false,
+        },
+        sha1: {
+          type: Sequelize.STRING(255),
+          allowNull: false,
+        },
       },
       {
         sequelize,

@@ -63,6 +63,15 @@ module.exports = {
         nickname: "DIPITO",
         wallet: "0x28D5015a69073E561da6C47dDB2e71265CE6de1B",
       },
+      {
+        id: 6,
+        name: "Christopher James Brenner",
+        email: "team@chrisjames.lol",
+        type: "Producer",
+        password: hash,
+        nickname: "Chris James",
+        wallet: "0x8eEc6fa26B6B3B48D072C15FD32D3750b7dBEf2F",
+      },
     ];
 
     await queryInterface.bulkInsert("user", bulk, {});
