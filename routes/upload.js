@@ -77,7 +77,7 @@ router.post(
     const { data } = result.data;
     for (const song of data.results) {
       // confidence 값이 0.3 이상인 경우 중복 곡으로 판단
-      if (song.input_confidence > 0.3) {
+      if (song.input_confidence >= 0.3) {
         isDuplicated = true;
         break;
       }
