@@ -55,7 +55,7 @@ router.get("/", isLoggedIn, async (req, res) => {
     });
     const data = music.map((record) => record.toJSON());
 
-    for(var i=0; i<data.length; i++) {
+    for (var i = 0; i < data.length; i++) {
       let cid1 = data[i].cid1;
 
       console.log(cid1);
@@ -65,10 +65,10 @@ router.get("/", isLoggedIn, async (req, res) => {
         chunks.push(chunk);
       }
       let meta = Buffer.concat(chunks);
-  
+
       let songInfo = JSON.parse(meta).songInfo;
       songInfo = JSON.stringify(songInfo);
-  
+
       let imageCid = JSON.parse(songInfo).imageCid;
       chunks = [];
       for await (const chunk of node.cat(imageCid)) {
