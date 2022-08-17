@@ -3,14 +3,9 @@ const { Op } = require("sequelize");
 const { isLoggedIn } = require("../middlewares/auth");
 const Music = require("../models/Music");
 const User = require("../models/User");
-const IPFS = require("ipfs-core");
+const IPFS = require("../modules/ipfs");
 
 const router = express.Router();
-
-let node;
-(async () => {
-  node = await IPFS.create();
-})();
 
 router.get("/", isLoggedIn, async (req, res, next) => {
   const { search } = req.query;
@@ -99,6 +94,7 @@ router.get("/chart", isLoggedIn, async (req, res, next) => {
 
 router.get("/:id", isLoggedIn, async (req, res, next) => {
   const id = req.params.id;
+  const node = IPFS.getInstance();
 
   try {
     const music = await Music.findOne({
