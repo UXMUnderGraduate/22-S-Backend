@@ -9,6 +9,30 @@ const passport = require("../passport/index.js");
 
 const router = express.Router();
 
+router.post("/check", isNotLoggedIn, async (req, res, next) => {
+  const { wallet } = req.body;
+
+  try {
+    const exWallet = await User.findOne({ where: { wallet } });
+    if (exWallet) {
+      return res
+        .status(400)
+        .json({ message: "이미 존재하는 지갑 주소입니다.", data: {} });
+    }
+
+    return res.json({
+      message: "사용 가능한 지갑 주소입니다.",
+      data: {},
+    });
+  } catch (err) {
+    console.error(err);
+    return res.json({
+      message: "지갑 주소 중복 확인 실패",
+      data: {},
+    });
+  }
+});
+
 router.post("/signup", isNotLoggedIn, async (req, res, next) => {
   const { email, password, name, type, nickname, wallet } = req.body;
   const salt = 12;
