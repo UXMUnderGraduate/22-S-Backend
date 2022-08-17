@@ -4,6 +4,7 @@ const axios = require("axios").default;
 const FormData = require("form-data");
 const { isLoggedIn } = require("../middlewares/auth");
 const Music = require("../models/Music");
+const IPFS = require("../modules/ipfs");
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -38,6 +39,58 @@ router.delete("/:id", isLoggedIn, async (req, res) => {
     console.error(err);
     return res.status(400).json({
       message: "음원 삭제 실패",
+      data: {},
+    });
+  }
+});
+
+router.get("/", isLoggedIn, async (req, res) => {
+  const node = IPFS.getInstance();
+
+  try {
+    const userId = req.user.id;
+    const music = await Music.findAll({
+      where: { user_id: userId },
+      attributes: ["id", "title", "artist", "cid1"],
+    });
+    const data = music.map((record) => record.toJSON());
+
+    for (var i = 0; i < data.length; i++) {
+      let cid1 = data[i].cid1;
+
+      console.log(cid1);
+
+      let chunks = [];
+      for await (const chunk of node.cat(cid1)) {
+        chunks.push(chunk);
+      }
+      let meta = Buffer.concat(chunks);
+
+      let songInfo = JSON.parse(meta).songInfo;
+      songInfo = JSON.stringify(songInfo);
+
+      let imageCid = JSON.parse(songInfo).imageCid;
+      chunks = [];
+      for await (const chunk of node.cat(imageCid)) {
+        chunks.push(chunk);
+      }
+      let image = Buffer.concat(chunks);
+      let encode = Buffer.from(image).toString("base64");
+
+      data[i].album = JSON.parse(songInfo).album;
+      data[i].image = encode;
+
+      delete data[i].cid1;
+    }
+
+    return res.json({
+      message: "업로드한 음원 조회 성공",
+      data,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(400).json({
+      message: "업로드한 음원 조회 실패",
       data: {},
     });
   }
