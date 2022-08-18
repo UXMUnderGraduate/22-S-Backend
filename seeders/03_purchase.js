@@ -11,9 +11,25 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    const bulk = [];
+    const bulk = [
+      {
+        id: 1,
+        user_id: 1,
+        music_id: 7,
+      },
+      {
+        id: 2,
+        user_id: 2,
+        music_id: 4,
+      },
+      {
+        id: 3,
+        user_id: 3,
+        music_id: 7,
+      },
+    ];
 
-    await queryInterface.bulkInsert("purchase", bulk, {});
+    await queryInterface.bulkInsert("Purchase", bulk, {});
   },
 
   async down(queryInterface, Sequelize) {

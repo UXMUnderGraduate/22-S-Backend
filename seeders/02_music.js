@@ -26,7 +26,7 @@ module.exports = {
       {
         id: 2,
         user_id: 1,
-        title: "싫은 날",
+        title: "안 싫은 날",
         genre: "Pop",
         artist: "아이유",
         cid1: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUcyuvibCh",
