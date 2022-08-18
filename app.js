@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 const morgan = require("morgan");
 const passport = require("./passport");
+const IPFS = require("./modules/ipfs");
 const { sequelize } = require("./models");
 const seed = require("./seeders");
 
@@ -55,6 +56,7 @@ app.use((err, req, res, next) => {
   res.send("Internal Server Error");
 });
 
-app.listen(app.get("port"), () => {
+app.listen(app.get("port"), async () => {
+  await IPFS.init();
   console.log(app.get("port"), "번 포트에서 대기중");
 });
