@@ -42,5 +42,12 @@
     "eslint-plugin-prettier": "^4.2.1",
     "nodemon": "^2.0.19",
     "prettier": "2.7.1"
+  },
+  "nodemonConfig": {
+    "events": {
+      "restart": "rmdir \"%USERPROFILE%\\.jsipfs\\repo.lock\"",
+      "start": "rmdir \"%USERPROFILE%\\.jsipfs\\repo.lock\"",
+      "crash": "rmdir \"%USERPROFILE%\\.jsipfs\\repo.lock\""
+    }
   }
 }
