@@ -3,8 +3,7 @@ const music = require("./02_music");
 const purchase = require("./03_purchase");
 
 module.exports = async (queryInterface) => {
-  // const seeds = [user, music, purchase];
-  const seeds = [user, music];
+  const seeds = [user, music, purchase];
 
   for (const seed of seeds) {
     await seed.up(queryInterface);
