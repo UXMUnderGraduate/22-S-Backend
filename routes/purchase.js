@@ -31,9 +31,6 @@ router.get("/:id", isLoggedIn, async (req, res) => {
     });
     const { cid3 } = music;
 
-    console.log(cid3);
-    console.log(typeof cid3);
-
     let chunks = [];
 
     const key = process.env.IPFS_ENC_KEY;
@@ -42,8 +39,6 @@ router.get("/:id", isLoggedIn, async (req, res) => {
     for await (const chunk of node.cat(cid3)) {
       chunks.push(chunk);
     }
-
-    console.log(typeof cid3);
 
     const data = Buffer.concat(chunks);
 
