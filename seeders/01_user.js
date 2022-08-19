@@ -72,6 +72,24 @@ module.exports = {
         nickname: "Chris James",
         wallet: "0x8eEc6fa26B6B3B48D072C15FD32D3750b7dBEf2F",
       },
+      {
+        id: 7,
+        name: "백예린",
+        email: "yerinbaek@naver.com",
+        type: "Producer",
+        password: hash,
+        nickname: "백예린",
+        wallet: "0x8712E5CFA2860B9f7968c8A7215BfA0CE2b7564e",
+      },
+      {
+        id: 8,
+        name: "고형석",
+        email: "khs@gmail.com",
+        type: "Producer",
+        password: hash,
+        nickname: "구름",
+        wallet: "0x1A87Dfc50FEaC0621fDDc167df3650CD97d76aE8",
+      },
     ];
 
     await queryInterface.bulkInsert("user", bulk, {});
