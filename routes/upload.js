@@ -154,23 +154,31 @@ router.post(
     { name: "file", maxCount: 1 },
   ]),
   async (req, res, next) => {
-    const { originalname, buffer: imgBuffer } = req.files["image"][0];
-    const { buffer } = req.files["file"][0];
-    const {
-      title,
-      artist,
-      artistId,
-      album,
-      genre,
-      lyrics,
-      composerId,
-      songWriterId,
-      holder,
-      rate,
-    } = req.body;
-    const userId = req.user.id;
-
     try {
+      const { originalname, buffer: imgBuffer } = req.files["image"][0];
+      const { buffer } = req.files["file"][0];
+      const {
+        title,
+        artist,
+        artistId,
+        album,
+        genre,
+        lyrics,
+        composerId,
+        songWriterId,
+        holder,
+        rate,
+      } = req.body;
+      const userId = req.user.id;
+      const userType = req.user.type;
+
+      if (userType !== "Producer") {
+        return res.status(403).json({
+          message: "음원 업로드 실패 - 권한이 없습니다.",
+          data: {},
+        });
+      }
+
       const composers = JSON.parse(composerId);
       const songWriters = JSON.parse(songWriterId);
       const holders = JSON.parse(holder);
