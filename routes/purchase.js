@@ -14,11 +14,9 @@ router.get("/", isLoggedIn, async (req, res, next) => {
       where: { user_id: req.user.id },
       attributes: ["music_id"],
     });
-
     const data = music.map((record) => record.toJSON());
 
     let list = [];
-
     for (var i = 0; i < data.length; i++) {
       const info = await Music.findOne({
         where: { id: music[i].music_id },
@@ -29,8 +27,6 @@ router.get("/", isLoggedIn, async (req, res, next) => {
 
       const { cid1 } = info;
 
-      // console.log(data2);
-
       let chunks = [];
       for await (const chunk of node.cat(cid1)) {
         chunks.push(chunk);
@@ -39,8 +35,6 @@ router.get("/", isLoggedIn, async (req, res, next) => {
 
       let songInfo = JSON.parse(meta).songInfo;
       songInfo = JSON.stringify(songInfo);
-
-      console.log(songInfo);
 
       // const imageCid = JSON.parse(songInfo).imageCid;
       // chunks = [];
@@ -59,13 +53,13 @@ router.get("/", isLoggedIn, async (req, res, next) => {
     }
 
     return res.status(200).json({
-      message: "성공",
+      message: "음원 구매 내역 조회 성공",
       data: list,
     });
   } catch (err) {
     console.error(err);
     return res.status(400).json({
-      message: "목록 불러오기 실패",
+      message: "음원 구매 내역 조회 실패",
       data: {},
     });
   }
