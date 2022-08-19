@@ -3,8 +3,63 @@ const { isLoggedIn } = require("../middlewares/auth");
 const Purchase = require("../models/Purchase");
 const Music = require("../models/Music");
 const IPFS = require("../modules/ipfs");
+const CryptoJS = require("crypto-js");
 
 const router = express.Router();
+
+router.get("/:id", isLoggedIn, async (req, res) => {
+  const node = IPFS.getInstance();
+
+  const userId = req.user.id;
+  const musicId = req.params.id;
+
+  try {
+    const buy = await Purchase.findOne({
+      where: { user_id: userId, music_id: musicId },
+    });
+
+    if (buy == null) {
+      return res.status(403).json({
+        message: "음원 다운로드 실패 - 권한이 없습니다.",
+        data: {},
+      });
+    }
+
+    const music = await Music.findOne({
+      where: { id: musicId },
+      attributes: ["cid3"],
+    });
+    const { cid3 } = music;
+
+    console.log(cid3);
+    console.log(typeof cid3);
+
+    let chunks = [];
+
+    const key = process.env.IPFS_ENC_KEY;
+    const iv = process.env.IPFS_ENC_IV;
+
+    for await (const chunk of node.cat(cid3)) {
+      chunks.push(chunk);
+    }
+
+    console.log(typeof cid3);
+
+    const data = Buffer.concat(chunks);
+
+    const decrypted = CryptoJS.AES.decrypt(data.toString(), key, { iv });
+
+    const buffer = Buffer.from(decrypted.toString(CryptoJS.enc.Utf8), "base64");
+
+    return res.send(buffer);
+  } catch (err) {
+    console.error(err);
+    return res.status(400).json({
+      message: "음원 다운로드 실패",
+      data: {},
+    });
+  }
+});
 
 router.get("/", isLoggedIn, async (req, res, next) => {
   const node = IPFS.getInstance();
