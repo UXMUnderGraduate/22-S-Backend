@@ -3,7 +3,7 @@ const multer = require("multer");
 const axios = require("axios").default;
 const FormData = require("form-data");
 const CryptoJS = require("crypto-js");
-const BloomFilter = require("../modules/bloom-filter");
+const filter = require("../modules/bloom-filter");
 const { isLoggedIn } = require("../middlewares/auth");
 const Music = require("../models/Music");
 const IPFS = require("../modules/ipfs");
@@ -252,8 +252,13 @@ router.post(
       const { cid: cid2 } = await node.add(JSON.stringify(copyright));
       await Music.update({ cid2: cid2.toString() }, { where: { id: songId } });
 
-      const filter = new BloomFilter();
       filter.add(sha1);
+      if (!filter.saveFilter()) {
+        return res.send({
+          message: "음원 업로드 실패",
+          data: {},
+        });
+      }
 
       return res.send({
         message: "음원 업로드 성공",
