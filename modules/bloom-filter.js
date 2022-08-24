@@ -53,7 +53,7 @@ class BloomFilter {
 
   saveFilter() {
     try {
-      fs.writeFileSync("./bloom.json");
+      fs.writeFileSync("./bloom.json", JSON.stringify(this.array));
       return true;
     } catch (err) {
       console.error(err);

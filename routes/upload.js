@@ -1,7 +1,5 @@
 const express = require("express");
 const multer = require("multer");
-const axios = require("axios").default;
-const FormData = require("form-data");
 const CryptoJS = require("crypto-js");
 const filter = require("../modules/bloom-filter");
 const { isLoggedIn } = require("../middlewares/auth");
@@ -104,45 +102,34 @@ router.post(
   isLoggedIn,
   upload.single("file"),
   async (req, res, next) => {
-    const file = req.file;
+    try {
+      const { buffer } = req.file;
+      const wordArray = CryptoJS.lib.WordArray.create(buffer);
+      const sha1 = CryptoJS.SHA1(wordArray).toString();
 
-    const formData = new FormData();
-    formData.append("file", Buffer.from(file.buffer), file.originalname);
-
-    // dejavu 도커 이미지에서 flask 서버 포트를 7000번으로 열어야 함
-    const result = await axios.post(
-      "http://localhost:7000/recognize",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        maxBodyLength: Infinity,
-        maxContentLength: Infinity,
+      let isDuplicated = false;
+      if (filter.has(sha1)) {
+        const exMusic = await Music.findOne({
+          where: {
+            sha1,
+          },
+        });
+        if (exMusic) {
+          isDuplicated = true;
+        }
       }
-    );
 
-    if (result.status !== 200) {
+      return res.json({
+        message: "중복 곡 체크 성공",
+        data: { isDuplicated },
+      });
+    } catch (err) {
+      console.error(err);
       return res.status(400).json({
         message: "중복 곡 체크 실패",
         data: {},
       });
     }
-
-    let isDuplicated = false;
-    const { data } = result.data;
-    for (const song of data.results) {
-      // confidence 값이 0.3 이상인 경우 중복 곡으로 판단
-      if (song.input_confidence >= 0.3) {
-        isDuplicated = true;
-        break;
-      }
-    }
-
-    return res.json({
-      message: "중복 곡 체크 성공",
-      data: { isDuplicated },
-    });
   }
 );
 
