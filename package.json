@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/UXMUnderGraduate/22-S-Backend#readme",
   "dependencies": {
-    "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.1",
