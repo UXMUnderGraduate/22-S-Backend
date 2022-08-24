@@ -2,10 +2,87 @@ const express = require("express");
 const { isLoggedIn } = require("../middlewares/auth");
 const Purchase = require("../models/Purchase");
 const Music = require("../models/Music");
+const User = require("../models/User");
 const IPFS = require("../modules/ipfs");
 const CryptoJS = require("crypto-js");
+const Web3 = require("web3");
 
 const router = express.Router();
+
+let web3 = new Web3(
+  new Web3.providers.HttpProvider(
+    `https://ropsten.infura.io/v3/${process.env.ETH_API_KEY}`
+  )
+);
+
+router.post("/:id", isLoggedIn, async (req, res, next) => {
+  const userId = req.user.id;
+  const musicId = req.params.id;
+  const hash = req.body.hash;
+
+  try {
+    const receipt = await web3.eth
+      .getTransactionReceipt(hash)
+      .then(function (receipt) {
+        return receipt;
+      });
+
+    const logs = web3.eth.abi.decodeLog(
+      [
+        {
+          type: "address",
+          name: "buyer",
+        },
+        {
+          type: "bytes32",
+          name: "songCid",
+        },
+        {
+          type: "uint256",
+          name: "amount",
+        },
+      ],
+      receipt.logs[0].data,
+      receipt.logs[0].topics
+    );
+
+    const user = await User.findOne({
+      where: { wallet: logs.buyer },
+      attributes: ["id"],
+    });
+    const user_id = user.id;
+
+    const music = await Music.findOne({
+      where: { cid1: logs.songCid },
+      attributes: ["id"],
+    });
+    const music_id = music.id;
+
+    if (user_id != userId || music_id != musicId) {
+      return res.status(403).json({
+        message: "음원 결제 실패 - 권한이 없습니다.",
+        data: {},
+      });
+    }
+
+    Purchase.create({
+      user_id,
+      music_id,
+    });
+
+    return res.status(200).json({
+      message: "음원 결제 성공",
+      data: {
+        id: songId,
+      },
+    });
+  } catch (err) {
+    return res.status(400).json({
+      message: "음원 결제 실패",
+      data: {},
+    });
+  }
+});
 
 router.get("/:id", isLoggedIn, async (req, res) => {
   const node = IPFS.getInstance();
