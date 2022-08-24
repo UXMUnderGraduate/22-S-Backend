@@ -65,7 +65,7 @@ router.post("/:id", isLoggedIn, async (req, res, next) => {
       });
     }
 
-    Purchase.create({
+    const { id } = await Purchase.create({
       user_id,
       music_id,
     });
@@ -73,10 +73,11 @@ router.post("/:id", isLoggedIn, async (req, res, next) => {
     return res.status(200).json({
       message: "음원 결제 성공",
       data: {
-        id: songId,
+        id,
       },
     });
   } catch (err) {
+    console.error(err);
     return res.status(400).json({
       message: "음원 결제 실패",
       data: {},
