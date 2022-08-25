@@ -13,6 +13,7 @@ const userRouter = require("./routes/user");
 const musicRouter = require("./routes/music");
 const uploadRouter = require("./routes/upload");
 const purchaseRouter = require("./routes/purchase");
+const cors = require("cors");
 
 const app = express();
 app.set("port", process.env.PORT || 5000);
@@ -37,6 +38,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(passport.initialize());
+app.use(cors());
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/music", musicRouter);
