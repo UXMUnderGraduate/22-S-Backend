@@ -45,6 +45,7 @@ router.get("/", isLoggedIn, async (req, res, next) => {
       where: {
         [Op.or]: operators,
       },
+      attributes: ["id", "user_id", "title", "genre", "artist"],
     });
     const data = result.map((record) => record.toJSON());
 
@@ -61,7 +62,7 @@ router.get("/", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/chart", isLoggedIn, async (req, res, next) => {
+router.get("/chart", async (req, res, next) => {
   const { genre } = req.query;
 
   if (genre === undefined) {
@@ -76,6 +77,7 @@ router.get("/chart", isLoggedIn, async (req, res, next) => {
       where: {
         genre: genre,
       },
+      attributes: ["id", "user_id", "title", "genre", "artist"],
     });
     const data = result.map((record) => record.toJSON());
 
