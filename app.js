@@ -18,7 +18,7 @@ const cors = require("cors");
 const app = express();
 app.set("port", process.env.PORT || 5000);
 
-const force = true;
+const force = false;
 sequelize
   .sync({ force })
   .then(() => {
