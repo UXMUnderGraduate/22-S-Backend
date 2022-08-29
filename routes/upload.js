@@ -6,6 +6,11 @@ const { isLoggedIn } = require("../middlewares/auth");
 const Music = require("../models/Music");
 const IPFS = require("../modules/ipfs");
 const User = require("../models/User");
+const Web3 = require("web3");
+const web3 = require("../modules/web3");
+
+const abiSeller = require("../contracts/contracts_SellerContract_sol_SellerContract.json");
+const abiSettle = require("../contracts/contracts_SettlementContract_sol_SettlementContract.json");
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -198,7 +203,16 @@ router.post(
 router.post("/", isLoggedIn, upload.single("file"), async (req, res, next) => {
   try {
     const { buffer } = req.file;
-    const { title, artist, genre, holder, rate, cid1 } = req.body;
+    const {
+      title,
+      artist,
+      genre,
+      holder,
+      rate,
+      cid1,
+      sellerAddr,
+      settlementAddr,
+    } = req.body;
     const userId = req.user.id;
     const userType = req.user.type;
 
@@ -211,6 +225,60 @@ router.post("/", isLoggedIn, upload.single("file"), async (req, res, next) => {
 
     const holders = JSON.parse(holder);
     const rates = JSON.parse(rate);
+
+    const sellerContract = new web3.eth.Contract(abiSeller, sellerAddr);
+    const sellerId = await sellerContract.methods
+      .userId()
+      .call()
+      .then((id) => {
+        id = Web3.utils.hexToString(id);
+        return Number(id);
+      });
+
+    if (sellerId !== userId) {
+      return res.status(400).json({
+        message: "음원 업로드 실패 - 올바르지 않은 컨트랙트 입니다.",
+        data: {},
+      });
+    }
+
+    const addresses = [];
+    const proportions = [];
+    let rightHolders = await User.findAll({
+      where: {
+        id: holders,
+      },
+      attributes: [
+        ["id", "userId"],
+        ["wallet", "walletAddress"],
+      ],
+    });
+    rightHolders = rightHolders.map((record) => record.toJSON());
+    rightHolders.forEach((user, index) => {
+      user.proportion = rates[index];
+      addresses.push(user.walletAddress);
+      proportions.push(user.proportion);
+    });
+
+    const encodedHash = web3.utils.keccak256(
+      web3.eth.abi.encodeParameters(
+        ["address[]", "uint256[]"],
+        [addresses, proportions]
+      )
+    );
+    const settlementContract = new web3.eth.Contract(abiSettle, settlementAddr);
+    const keccak256Hash = await settlementContract.methods.keccak256Hash
+      .call()
+      .then((hash) => {
+        return Web3.utils.hexToString(hash);
+      });
+
+    if (encodedHash !== keccak256Hash) {
+      return res.status(400).json({
+        message: "음원 업로드 실패 - 올바르지 않은 컨트랙트 입니다.",
+        data: {},
+      });
+    }
 
     const wordArray = CryptoJS.lib.WordArray.create(buffer);
     const sha1 = CryptoJS.SHA1(wordArray).toString();
@@ -233,20 +301,6 @@ router.post("/", isLoggedIn, upload.single("file"), async (req, res, next) => {
       cid2: "",
       cid3: cid3.toString(),
       sha1,
-    });
-
-    let rightHolders = await User.findAll({
-      where: {
-        id: holders,
-      },
-      attributes: [
-        ["id", "userId"],
-        ["wallet", "walletAddress"],
-      ],
-    });
-    rightHolders = rightHolders.map((record) => record.toJSON());
-    rightHolders.forEach((user, index) => {
-      user.proportion = rates[index];
     });
 
     const copyright = {
