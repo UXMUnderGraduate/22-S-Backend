@@ -5,15 +5,9 @@ const Music = require("../models/Music");
 const User = require("../models/User");
 const IPFS = require("../modules/ipfs");
 const CryptoJS = require("crypto-js");
-const Web3 = require("web3");
+const web3 = require("../modules/web3");
 
 const router = express.Router();
-
-let web3 = new Web3(
-  new Web3.providers.HttpProvider(
-    `https://ropsten.infura.io/v3/${process.env.ETH_API_KEY}`
-  )
-);
 
 router.post("/:id", isLoggedIn, async (req, res, next) => {
   const userId = req.user.id;
