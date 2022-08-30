@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.get("/", isLoggedIn, async (req, res, next) => {
   const { search } = req.query;
+  const node = IPFS.getInstance();
   const operators = [];
 
   if (search === undefined) {
@@ -45,9 +46,35 @@ router.get("/", isLoggedIn, async (req, res, next) => {
       where: {
         [Op.or]: operators,
       },
-      attributes: ["id", "user_id", "title", "genre", "artist"],
+      attributes: [
+        "id",
+        "user_id",
+        "title",
+        "genre",
+        "artist",
+        ["cid1", "image"],
+      ],
     });
     const data = result.map((record) => record.toJSON());
+    for (const element of data) {
+      let chunks = [];
+      for await (const chunk of node.cat(element.image)) {
+        chunks.push(chunk);
+      }
+      const meta = Buffer.concat(chunks);
+
+      let songInfo = JSON.parse(meta).songInfo;
+      songInfo = JSON.stringify(songInfo);
+
+      const imageCid = JSON.parse(songInfo).imageCid;
+      chunks = [];
+      for await (const chunk of node.cat(imageCid)) {
+        chunks.push(chunk);
+      }
+      const image = Buffer.concat(chunks);
+      const encode = Buffer.from(image).toString("base64");
+      element.image = encode;
+    }
 
     return res.json({
       message: "음원 검색 성공",
@@ -64,6 +91,7 @@ router.get("/", isLoggedIn, async (req, res, next) => {
 
 router.get("/chart", async (req, res, next) => {
   const { genre } = req.query;
+  const node = IPFS.getInstance();
 
   if (genre === undefined) {
     return res.status(400).json({
@@ -77,9 +105,35 @@ router.get("/chart", async (req, res, next) => {
       where: {
         genre: genre,
       },
-      attributes: ["id", "user_id", "title", "genre", "artist"],
+      attributes: [
+        "id",
+        "user_id",
+        "title",
+        "genre",
+        "artist",
+        ["cid1", "image"],
+      ],
     });
     const data = result.map((record) => record.toJSON());
+    for (const element of data) {
+      let chunks = [];
+      for await (const chunk of node.cat(element.image)) {
+        chunks.push(chunk);
+      }
+      const meta = Buffer.concat(chunks);
+
+      let songInfo = JSON.parse(meta).songInfo;
+      songInfo = JSON.stringify(songInfo);
+
+      const imageCid = JSON.parse(songInfo).imageCid;
+      chunks = [];
+      for await (const chunk of node.cat(imageCid)) {
+        chunks.push(chunk);
+      }
+      const image = Buffer.concat(chunks);
+      const encode = Buffer.from(image).toString("base64");
+      element.image = encode;
+    }
 
     return res.json({
       message: "음원 리스트 조회 성공",
