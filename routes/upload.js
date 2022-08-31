@@ -301,6 +301,8 @@ router.post("/", isLoggedIn, upload.single("file"), async (req, res, next) => {
       cid2: "",
       cid3: cid3.toString(),
       sha1,
+      address1: sellerAddr,
+      address2: settlementAddr,
     });
 
     const copyright = {
