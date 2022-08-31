@@ -155,9 +155,9 @@ router.get("/:id", isLoggedIn, async (req, res, next) => {
   try {
     const music = await Music.findOne({
       where: { id: id },
-      attributes: ["title", "genre", "artist", "cid1"],
+      attributes: ["title", "genre", "artist", "cid1", "address1", "address2"],
     });
-    const { title, genre, artist, cid1 } = music;
+    const { title, genre, artist, cid1, address1, address2 } = music;
 
     let chunks = [];
     for await (const chunk of node.cat(cid1)) {
@@ -209,6 +209,8 @@ router.get("/:id", isLoggedIn, async (req, res, next) => {
         composer: composers,
         songWriterId,
         songWriter: songWriters,
+        sellerAddr: address1,
+        settlementAddr: address2,
       },
     });
   } catch (err) {
