@@ -57,11 +57,14 @@ router.get("/", isLoggedIn, async (req, res) => {
     const userId = req.user.id;
     const music = await Music.findAll({
       where: { user_id: userId },
-      attributes: ["id", "title", "artist", "cid1"],
+      attributes: ["id", "title", "artist", "cid1", "address1", "address2"],
     });
     const data = music.map((record) => record.toJSON());
 
     for (var i = 0; i < data.length; i++) {
+      data[i].sellerAddr = data[i].address1;
+      data[i].settlementAddr = data[i].address2;
+
       let cid1 = data[i].cid1;
 
       console.log(cid1);
@@ -87,6 +90,8 @@ router.get("/", isLoggedIn, async (req, res) => {
       data[i].image = encode;
 
       delete data[i].cid1;
+      delete data[i].address1;
+      delete data[i].address2;
     }
 
     return res.json({
