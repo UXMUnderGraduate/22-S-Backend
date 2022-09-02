@@ -90,7 +90,7 @@ router.get("/", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/chart", async (req, res, next) => {
+router.get("/chart", isLoggedIn, async (req, res, next) => {
   const { genre } = req.query;
   const node = IPFS.getInstance();
 
