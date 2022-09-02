@@ -3,6 +3,7 @@ const { Op } = require("sequelize");
 const { isLoggedIn } = require("../middlewares/auth");
 const Music = require("../models/Music");
 const User = require("../models/User");
+const Purchase = require("../models/Purchase");
 const IPFS = require("../modules/ipfs");
 
 const router = express.Router();
@@ -157,7 +158,15 @@ router.get("/:id", isLoggedIn, async (req, res, next) => {
       where: { id: id },
       attributes: ["title", "genre", "artist", "cid1", "address1", "address2"],
     });
-    const { title, genre, artist, cid1, address1, address2 } = music;
+    let { title, genre, artist, cid1, address1, address2 } = music;
+
+    const purchase = await Purchase.findOne({
+      where: { user_id: req.user.id, music_id: id },
+    });
+    if (purchase) {
+      address1 = null;
+      address2 = null;
+    }
 
     let chunks = [];
     for await (const chunk of node.cat(cid1)) {
