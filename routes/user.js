@@ -97,7 +97,10 @@ router.put("/", isLoggedIn, async (req, res, next) => {
     });
   } catch (error) {
     console.error(error);
-    return next(error);
+    return res.status(400).json({
+      message: "회원 정보 수정 실패",
+      data: {},
+    });
   }
 });
 
