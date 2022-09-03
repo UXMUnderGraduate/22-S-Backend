@@ -1,6 +1,6 @@
 # SSH into machine and git pull for updates
 
-name: execute remote ssh to pull updates from master
+name: execute remote ssh to pull updates from main
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
@@ -20,7 +20,6 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
           port: ${{ secrets.PORT }}
           script: |
             cd ${{ secrets.APPNAME }}
