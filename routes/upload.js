@@ -322,13 +322,13 @@ router.post("/", isLoggedIn, upload.single("file"), async (req, res, next) => {
 
     filter.add(sha1);
     if (!filter.saveFilter()) {
-      return res.send({
+      return res.status(400).json({
         message: "음원 업로드 실패",
         data: {},
       });
     }
 
-    return res.send({
+    return res.json({
       message: "음원 업로드 성공",
       data: {
         id: songId,
@@ -336,7 +336,7 @@ router.post("/", isLoggedIn, upload.single("file"), async (req, res, next) => {
     });
   } catch (err) {
     console.error(err);
-    return res.json({
+    return res.status(400).json({
       message: "음원 업로드 실패",
       data: {},
     });

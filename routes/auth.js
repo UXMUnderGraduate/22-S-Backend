@@ -26,7 +26,7 @@ router.post("/check", isNotLoggedIn, async (req, res, next) => {
     });
   } catch (err) {
     console.error(err);
-    return res.json({
+    return res.status(400).json({
       message: "지갑 주소 중복 확인 실패",
       data: {},
     });
@@ -61,7 +61,10 @@ router.post("/signup", isNotLoggedIn, async (req, res, next) => {
     });
   } catch (error) {
     console.error(error);
-    return next(error);
+    return res.status(400).json({
+      message: "회원가입 실패",
+      data: {},
+    });
   }
 });
 
