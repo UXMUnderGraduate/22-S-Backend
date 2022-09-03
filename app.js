@@ -18,7 +18,8 @@ const cors = require("cors");
 const app = express();
 app.set("port", process.env.PORT || 5000);
 
-const force = true;
+const force = Number(process.env.DB_SYNC_FORCE);
+console.log(typeof force);
 sequelize
   .sync({ force })
   .then(() => {
