@@ -18,8 +18,8 @@ exports.isLoggedIn = (req, res, next) => {
         .json({ message: `JWT 토큰 인증 실패 - ${info.message}`, data: {} });
     }
 
-    const { id, name, type } = user;
-    req.user = { id, name, type };
+    const { id, name, type, nickname } = user;
+    req.user = { id, name, type, nickname };
     next();
   })(req, res, next);
 };
