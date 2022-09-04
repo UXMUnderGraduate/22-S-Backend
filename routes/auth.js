@@ -42,7 +42,7 @@ router.post("/signup", isNotLoggedIn, async (req, res, next) => {
     if (exUser) {
       return res.status(400).json({ error: "이미 존재하는 이메일입니다." });
     }
-    console.info("___User.create(): " + name);
+    console.info("___User.create(): " + nickname);
     const hash = await bcrypt.hash(password, salt);
     const newUser = await User.create({
       email,
@@ -56,7 +56,7 @@ router.post("/signup", isNotLoggedIn, async (req, res, next) => {
       message: "회원가입 성공",
       data: {
         id: newUser.getDataValue("id"),
-        name: name,
+        nickname,
       },
     });
   } catch (error) {
@@ -89,7 +89,12 @@ router.post("/signin", (req, res, next) => {
       }
 
       const token = jwt.sign(
-        { id: user.id, name: user.name, type: user.type },
+        {
+          id: user.id,
+          name: user.name,
+          type: user.type,
+          nickname: user.nickname,
+        },
         process.env.JWT_SECRET
       );
       return res.json({
