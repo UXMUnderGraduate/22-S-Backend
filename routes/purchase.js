@@ -6,6 +6,7 @@ const User = require("../models/User");
 const IPFS = require("../modules/ipfs");
 const CryptoJS = require("crypto-js");
 const web3 = require("../modules/web3");
+const jwt = require("../modules/jwt");
 
 const router = express.Router();
 
@@ -79,13 +80,21 @@ router.post("/:id", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/:id", isLoggedIn, async (req, res) => {
+router.get("/:id", async (req, res) => {
+  const { token } = req.query;
   const node = IPFS.getInstance();
-
-  const userId = req.user.id;
   const musicId = req.params.id;
 
   try {
+    const decoded = jwt.verify(token);
+    if (decoded === null) {
+      return res.status(403).json({
+        message: "음원 다운로드 실패 - 권한이 없습니다.",
+        data: {},
+      });
+    }
+    const userId = decoded.id;
+
     const buy = await Purchase.findOne({
       where: { user_id: userId, music_id: musicId },
     });

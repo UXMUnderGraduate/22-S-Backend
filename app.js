@@ -19,7 +19,6 @@ const app = express();
 app.set("port", process.env.PORT || 5000);
 
 const force = Number(process.env.DB_SYNC_FORCE); // 0이면 false, 1이면 true
-console.log(typeof force);
 sequelize
   .sync({ force })
   .then(() => {
