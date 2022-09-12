@@ -4,7 +4,8 @@ const Purchase = require("../models/Purchase");
 const Music = require("../models/Music");
 const User = require("../models/User");
 const IPFS = require("../modules/ipfs");
-const CryptoJS = require("crypto-js");
+const crypto = require("crypto");
+const zlib = require("zlib");
 const web3 = require("../modules/web3");
 const jwt = require("../modules/jwt");
 
@@ -113,21 +114,21 @@ router.get("/:id", async (req, res) => {
     const { cid3 } = music;
 
     let chunks = [];
-
-    const key = process.env.IPFS_ENC_KEY;
-    const iv = process.env.IPFS_ENC_IV;
-
     for await (const chunk of node.cat(cid3)) {
       chunks.push(chunk);
     }
-
     const data = Buffer.concat(chunks);
 
-    const decrypted = CryptoJS.AES.decrypt(data.toString(), key, { iv });
+    const key = Buffer.from(process.env.IPFS_ENC_KEY, "utf8");
+    const iv = Buffer.from(process.env.IPFS_ENC_IV, "utf8");
+    const decipher = crypto.createDecipheriv("aes-128-ctr", key, iv);
 
-    const buffer = Buffer.from(decrypted.toString(CryptoJS.enc.Utf8), "base64");
+    let decrypted = decipher.update(data);
+    decrypted = Buffer.concat([decrypted, decipher.final()]);
 
-    return res.send(buffer);
+    const gunzipped = zlib.gunzipSync(decrypted);
+
+    return res.send(gunzipped);
   } catch (err) {
     console.error(err);
     return res.status(400).json({
