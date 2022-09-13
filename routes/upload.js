@@ -1,6 +1,8 @@
 const express = require("express");
 const multer = require("multer");
 const CryptoJS = require("crypto-js");
+const zlib = require("zlib");
+const crypto = require("crypto");
 const filter = require("../modules/bloom-filter");
 const { isLoggedIn } = require("../middlewares/auth");
 const Music = require("../models/Music");
@@ -288,14 +290,17 @@ router.post("/", isLoggedIn, upload.single("file"), async (req, res, next) => {
     const wordArray = CryptoJS.lib.WordArray.create(buffer);
     const sha1 = CryptoJS.SHA1(wordArray).toString();
 
-    const key = process.env.IPFS_ENC_KEY;
-    const iv = process.env.IPFS_ENC_IV;
-    const encrypted = CryptoJS.AES.encrypt(buffer.toString("base64"), key, {
-      iv,
-    });
+    const gzipped = zlib.gzipSync(buffer);
+
+    const key = Buffer.from(process.env.IPFS_ENC_KEY, "utf8");
+    const iv = Buffer.from(process.env.IPFS_ENC_IV, "utf8");
+    const cipher = crypto.createCipheriv("aes-128-ctr", key, iv);
+
+    let encrypted = cipher.update(gzipped);
+    encrypted = Buffer.concat([encrypted, cipher.final()]);
 
     const node = IPFS.getInstance();
-    const { cid: cid3 } = await node.add(encrypted.toString());
+    const { cid: cid3 } = await node.add(encrypted);
 
     const { id: songId } = await Music.create({
       user_id: userId,
