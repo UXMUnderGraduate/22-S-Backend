@@ -60,7 +60,6 @@ app.use((err, req, res, next) => {
   res.send("Internal Server Error");
 });
 
-app.listen(app.get("port"), async () => {
-  await IPFS.init();
+app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 대기중");
 });
