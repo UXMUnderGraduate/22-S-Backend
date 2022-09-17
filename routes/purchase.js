@@ -109,9 +109,10 @@ router.get("/:id", async (req, res) => {
 
     const music = await Music.findOne({
       where: { id: musicId },
-      attributes: ["cid3"],
+      attributes: ["title", "artist", "cid3"],
     });
-    const { cid3 } = music;
+    const { title, artist, cid3 } = music;
+    const filename = `${artist}-${title}.mp3`;
 
     let chunks = [];
     for await (const chunk of node.cat(cid3)) {
@@ -128,6 +129,7 @@ router.get("/:id", async (req, res) => {
 
     const gunzipped = zlib.gunzipSync(decrypted);
 
+    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
     return res.send(gunzipped);
   } catch (err) {
     console.error(err);
