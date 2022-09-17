@@ -156,16 +156,15 @@ router.get("/:id", isLoggedIn, async (req, res, next) => {
   try {
     const music = await Music.findOne({
       where: { id: id },
-      attributes: ["title", "genre", "artist", "cid1", "address1", "address2"],
+      attributes: ["title", "genre", "artist", "cid1", "address1"],
     });
-    let { title, genre, artist, cid1, address1, address2 } = music;
+    let { title, genre, artist, cid1, address1 } = music;
 
     const purchase = await Purchase.findOne({
       where: { user_id: req.user.id, music_id: id },
     });
     if (purchase) {
       address1 = null;
-      address2 = null;
     }
 
     let chunks = [];
@@ -218,8 +217,7 @@ router.get("/:id", isLoggedIn, async (req, res, next) => {
         composer: composers,
         songWriterId,
         songWriter: songWriters,
-        sellerAddr: address1,
-        settlementAddr: address2,
+        settlementAddr: address1,
       },
     });
   } catch (err) {
