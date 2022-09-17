@@ -1,19 +1,17 @@
-const ipfs = require("ipfs-core");
+const ipfs = require("ipfs-http-client");
 
 class IPFS {
+  constructor() {
+    this.init();
+  }
+
   init() {
-    return new Promise((resolve, reject) => {
-      ipfs
-        .create()
-        .then((instance) => {
-          this.node = instance;
-          resolve();
-        })
-        .catch((err) => {
-          console.error(err);
-          reject(err);
-        });
-    });
+    try {
+      const instance = ipfs.create("http://localhost:5001");
+      this.node = instance;
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   getInstance() {
