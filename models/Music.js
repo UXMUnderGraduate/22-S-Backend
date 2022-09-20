@@ -47,10 +47,6 @@ module.exports = class Music extends Sequelize.Model {
           type: Sequelize.STRING(255),
           allowNull: false,
         },
-        address2: {
-          type: Sequelize.STRING(255),
-          allowNull: false,
-        },
       },
       {
         sequelize,

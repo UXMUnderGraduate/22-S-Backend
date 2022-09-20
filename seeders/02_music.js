@@ -22,8 +22,7 @@ module.exports = {
         cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
         cid3: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihZd",
         sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1a2",
-        address1: "0xD940f62852c187293Fb01459436fD12F77Ef175E",
-        address2: "0xEc7d9C588E8C07C80529E2DEBfd71EBF08d2354d",
+        address1: "0xEc7d9C588E8C07C80529E2DEBfd71EBF08d2354d",
       },
       {
         id: 2,
@@ -35,8 +34,7 @@ module.exports = {
         cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
         cid3: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihZd",
         sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1a2",
-        address1: "0xbaD1A6c2cE61a339c51B559e75D3c04B7f0dD320",
-        address2: "0x75986f6Ec6A27fE66e78863DaB7111Ff9267e37b",
+        address1: "0x75986f6Ec6A27fE66e78863DaB7111Ff9267e37b",
       },
       {
         id: 3,
@@ -48,8 +46,7 @@ module.exports = {
         cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
         cid3: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihZd",
         sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1a2",
-        address1: "0xbaD1A6c2cE61a339c51B559e75D3c04B7f0dD320",
-        address2: "0x75986f6Ec6A27fE66e78863DaB7111Ff9267e37b",
+        address1: "0x75986f6Ec6A27fE66e78863DaB7111Ff9267e37b",
       },
       {
         id: 4,
@@ -61,8 +58,7 @@ module.exports = {
         cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
         cid3: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihZd",
         sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1a2",
-        address1: "0xbaD1A6c2cE61a339c51B559e75D3c04B7f0dD320",
-        address2: "0x75986f6Ec6A27fE66e78863DaB7111Ff9267e37b",
+        address1: "0x75986f6Ec6A27fE66e78863DaB7111Ff9267e37b",
       },
       {
         id: 5,
@@ -74,8 +70,7 @@ module.exports = {
         cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
         cid3: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihZd",
         sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1a2",
-        address1: "0xbaD1A6c2cE61a339c51B559e75D3c04B7f0dD320",
-        address2: "0x75986f6Ec6A27fE66e78863DaB7111Ff9267e37b",
+        address1: "0x75986f6Ec6A27fE66e78863DaB7111Ff9267e37b",
       },
       {
         id: 6,
@@ -87,8 +82,7 @@ module.exports = {
         cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
         cid3: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihZd",
         sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1a2",
-        address1: "0xbaD1A6c2cE61a339c51B559e75D3c04B7f0dD320",
-        address2: "0x75986f6Ec6A27fE66e78863DaB7111Ff9267e37b",
+        address1: "0x75986f6Ec6A27fE66e78863DaB7111Ff9267e37b",
       },
       {
         id: 7,
@@ -100,8 +94,19 @@ module.exports = {
         cid2: "QmaB3w6aGfsDs7CC3aeWUtPnMFHHuZ33yB6QRzKGTzB5PF",
         cid3: "QmWivSrufNi2pVT3kxdJ9GehTDjjxwDZtjNvK1g2VPb4GV",
         sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1ec",
-        address1: "0xbaD1A6c2cE61a339c51B559e75D3c04B7f0dD320",
-        address2: "0x75986f6Ec6A27fE66e78863DaB7111Ff9267e37b",
+        address1: "0x75986f6Ec6A27fE66e78863DaB7111Ff9267e37b",
+      },
+      {
+        id: 8,
+        user_id: 10,
+        title: "아이와 나와 바다",
+        genre: "Pop",
+        artist: "아이유",
+        cid1: "QmWZipPtKnuVkn1mwNMqEw8apx513me2B3aCByCchsCmHk",
+        cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
+        cid3: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihZd",
+        sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1a2",
+        address1: "0x983b35886F4c9E64d0619826916C7500E0952821",
       },
     ];
 

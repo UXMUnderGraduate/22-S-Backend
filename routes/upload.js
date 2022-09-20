@@ -11,7 +11,6 @@ const User = require("../models/User");
 const Web3 = require("web3");
 const web3 = require("../modules/web3");
 
-const abiSeller = require("../contracts/contracts_SellerContract_sol_SellerContract.json");
 const abiSettle = require("../contracts/contracts_SettlementContract_sol_SettlementContract.json");
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -59,13 +58,12 @@ router.get("/", isLoggedIn, async (req, res) => {
     const userId = req.user.id;
     const music = await Music.findAll({
       where: { user_id: userId },
-      attributes: ["id", "title", "artist", "cid1", "address1", "address2"],
+      attributes: ["id", "title", "artist", "cid1", "address1"],
     });
     const data = music.map((record) => record.toJSON());
 
     for (var i = 0; i < data.length; i++) {
-      data[i].sellerAddr = data[i].address1;
-      data[i].settlementAddr = data[i].address2;
+      data[i].settlementAddr = data[i].address1;
 
       let cid1 = data[i].cid1;
 
@@ -93,7 +91,6 @@ router.get("/", isLoggedIn, async (req, res) => {
 
       delete data[i].cid1;
       delete data[i].address1;
-      delete data[i].address2;
     }
 
     return res.json({
@@ -210,16 +207,8 @@ router.post(
 router.post("/", isLoggedIn, upload.single("file"), async (req, res, next) => {
   try {
     const { buffer } = req.file;
-    const {
-      title,
-      artist,
-      genre,
-      holder,
-      rate,
-      cid1,
-      sellerAddr,
-      settlementAddr,
-    } = req.body;
+    const { title, artist, genre, holder, rate, cid1, settlementAddr } =
+      req.body;
     const userId = req.user.id;
     const userType = req.user.type;
 
@@ -232,22 +221,6 @@ router.post("/", isLoggedIn, upload.single("file"), async (req, res, next) => {
 
     const holders = JSON.parse(holder);
     const rates = JSON.parse(rate);
-
-    const sellerContract = new web3.eth.Contract(abiSeller, sellerAddr);
-    const sellerId = await sellerContract.methods
-      .userId()
-      .call()
-      .then((id) => {
-        id = Web3.utils.hexToString(id);
-        return Number(id);
-      });
-
-    if (sellerId !== userId) {
-      return res.status(400).json({
-        message: "음원 업로드 실패 - 올바르지 않은 컨트랙트 입니다.",
-        data: {},
-      });
-    }
 
     const addresses = [];
     const proportions = [];
@@ -311,8 +284,7 @@ router.post("/", isLoggedIn, upload.single("file"), async (req, res, next) => {
       cid2: "",
       cid3: cid3.toString(),
       sha1,
-      address1: sellerAddr,
-      address2: settlementAddr,
+      address1: settlementAddr,
     });
 
     const copyright = {
