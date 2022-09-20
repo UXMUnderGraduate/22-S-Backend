@@ -96,6 +96,18 @@ module.exports = {
         sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1ec",
         address1: "0x75986f6Ec6A27fE66e78863DaB7111Ff9267e37b",
       },
+      {
+        id: 8,
+        user_id: 10,
+        title: "아이와 나와 바다",
+        genre: "Pop",
+        artist: "아이유",
+        cid1: "QmWZipPtKnuVkn1mwNMqEw8apx513me2B3aCByCchsCmHk",
+        cid2: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihTc",
+        cid3: "QmSvj5TRVNGWEZxzcLnQNNhW12UKaCdMsGYjgUczdvihZd",
+        sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1a2",
+        address1: "0x983b35886F4c9E64d0619826916C7500E0952821",
+      },
     ];
 
     await queryInterface.bulkInsert("music", bulk, {});
