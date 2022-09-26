@@ -135,6 +135,15 @@ module.exports = {
         nickname: "킹왕짱",
         wallet: "0xB470f6bbC46fD633BF14388Ff5e69c614D51331c",
       },
+      {
+        id: 14,
+        name: "Oasis",
+        email: "oasis@gmail.com",
+        type: "Producer",
+        password: hash,
+        nickname: "Oasis",
+        wallet: "0x53BeD45e5E2387E1ed367E7c69342c72D8877Cf5",
+      },
     ];
 
     await queryInterface.bulkInsert("user", bulk, {});
