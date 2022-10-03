@@ -32,6 +32,11 @@ module.exports = {
         user_id: 9,
         music_id: 7,
       },
+      {
+        id: 5,
+        user_id: 9,
+        music_id: 9,
+      },
     ];
 
     await queryInterface.bulkInsert("Purchase", bulk, {});

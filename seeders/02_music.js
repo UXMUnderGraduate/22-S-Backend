@@ -108,6 +108,18 @@ module.exports = {
         sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1a2",
         address1: "0x983b35886F4c9E64d0619826916C7500E0952821",
       },
+      {
+        id: 9,
+        user_id: 14,
+        title: "Champagne Supernova",
+        genre: "Rock",
+        artist: "Oasis",
+        cid1: "QmcXEzse9wKagKFe1SgekmFH5XX3ZCzZ6idDK5Az69XFDA",
+        cid2: "QmVj2zMuQjZpPBLkPmh9axSn2TsYPvAmzox9e2MEnJkm5A",
+        cid3: "QmQnzGhm4p42mhE44pE8UszsANxcSAnehdh9zS5FWVUkkh",
+        sha1: "72f621e9828b2a9ce514dbd5628b35b70c4a731d",
+        address1: "0x983b35886F4c9E64d0619826916C7500E0952821",
+      },
     ];
 
     await queryInterface.bulkInsert("music", bulk, {});
