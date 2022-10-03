@@ -8,6 +8,7 @@ const crypto = require("crypto");
 const zlib = require("zlib");
 const web3 = require("../modules/web3");
 const jwt = require("../modules/jwt");
+const contentDisposition = require("content-disposition");
 
 const router = express.Router();
 
@@ -112,7 +113,7 @@ router.get("/:id", async (req, res) => {
       attributes: ["title", "artist", "cid3"],
     });
     const { title, artist, cid3 } = music;
-    const filename = `${artist}-${title}.mp3`;
+    const filename = encodeURI(`${artist}-${title}.mp3`);
 
     let chunks = [];
     for await (const chunk of node.cat(cid3)) {
@@ -129,7 +130,7 @@ router.get("/:id", async (req, res) => {
 
     const gunzipped = zlib.gunzipSync(decrypted);
 
-    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+    res.setHeader("Content-Disposition", contentDisposition(filename));
     return res.send(gunzipped);
   } catch (err) {
     console.error(err);

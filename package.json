@@ -20,6 +20,7 @@
   "homepage": "https://github.com/UXMUnderGraduate/22-S-Backend#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "content-disposition": "^0.5.4",
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.1",
