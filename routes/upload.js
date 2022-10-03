@@ -207,8 +207,7 @@ router.post(
 router.post("/", isLoggedIn, upload.single("file"), async (req, res, next) => {
   try {
     const { buffer } = req.file;
-    const { title, artist, genre, holder, rate, cid1, settlementAddr } =
-      req.body;
+    const { title, artist, genre, holder, rate, cid1, settleAddr } = req.body;
     const userId = req.user.id;
     const userType = req.user.type;
 
@@ -237,7 +236,8 @@ router.post("/", isLoggedIn, upload.single("file"), async (req, res, next) => {
     rightHolders.forEach((user, index) => {
       user.proportion = rates[index];
       addresses.push(user.walletAddress);
-      proportions.push(user.proportion);
+      const proportion = parseInt(user.proportion * 10000);
+      proportions.push(proportion);
     });
 
     const encodedHash = web3.utils.keccak256(
@@ -246,12 +246,10 @@ router.post("/", isLoggedIn, upload.single("file"), async (req, res, next) => {
         [addresses, proportions]
       )
     );
-    const settlementContract = new web3.eth.Contract(abiSettle, settlementAddr);
-    const keccak256Hash = await settlementContract.methods.keccak256Hash
-      .call()
-      .then((hash) => {
-        return Web3.utils.hexToString(hash);
-      });
+    const settlementContract = new web3.eth.Contract(abiSettle, settleAddr);
+    const keccak256Hash = await settlementContract.methods
+      .keccak256Hash()
+      .call();
 
     if (encodedHash !== keccak256Hash) {
       return res.status(400).json({
@@ -284,7 +282,7 @@ router.post("/", isLoggedIn, upload.single("file"), async (req, res, next) => {
       cid2: "",
       cid3: cid3.toString(),
       sha1,
-      address1: settlementAddr,
+      address1: settleAddr,
     });
 
     const copyright = {
