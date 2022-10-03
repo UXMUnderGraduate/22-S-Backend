@@ -113,7 +113,7 @@ router.get("/:id", async (req, res) => {
       attributes: ["title", "artist", "cid3"],
     });
     const { title, artist, cid3 } = music;
-    const filename = encodeURI(`${artist}-${title}.mp3`);
+    const filename = `${artist}-${title}.mp3`;
 
     let chunks = [];
     for await (const chunk of node.cat(cid3)) {
