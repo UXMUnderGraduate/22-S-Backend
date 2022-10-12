@@ -1,43 +1,34 @@
 const fs = require("fs");
+const { djb2, sdbm, loselose } = require("./hash");
 
 class BloomFilter {
   constructor() {
     this.loadOrCreateFilter();
   }
 
-  static djb2(s) {
-    let h = BigInt(5381);
-    for (let i = 0; i < s.length; i++) {
-      h = h * 33n + BigInt(s.charAt(i).charCodeAt());
-    }
-    return h;
-  }
-
-  static hash(n, i) {
+  static hash(s, i) {
     switch (i) {
       case 0:
-        return (n / 3n) % 16n;
+        return djb2(s) % 16n;
       case 1:
-        return (n / 2n) % 16n;
+        return sdbm(s) % 16n;
       case 2:
-        return (n / 7n) % 16n;
+        return loselose(s) % 16n;
     }
   }
 
   add(s) {
-    const n = BloomFilter.djb2(s);
     for (let i = 0; i < 3; i++) {
-      const h = BloomFilter.hash(n, i);
+      const h = BloomFilter.hash(s, i);
       this.array[h] = 1;
     }
   }
 
   has(s) {
-    const n = BloomFilter.djb2(s);
     const o =
-      this.array[BloomFilter.hash(n, 0)] &
-      this.array[BloomFilter.hash(n, 1)] &
-      this.array[BloomFilter.hash(n, 2)];
+      this.array[BloomFilter.hash(s, 0)] &
+      this.array[BloomFilter.hash(s, 1)] &
+      this.array[BloomFilter.hash(s, 2)];
     return Boolean(o);
   }
 
