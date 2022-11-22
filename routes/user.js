@@ -19,7 +19,7 @@ router.get("/", isLoggedIn, async (req, res, next) => {
           [Op.like]: `%${search}%`,
         },
       },
-      attributes: ["id", "email", "nickname"],
+      attributes: ["id", "email", "nickname", "wallet"],
     });
     const data = users.map((record) => record.toJSON());
     console.log(data);
