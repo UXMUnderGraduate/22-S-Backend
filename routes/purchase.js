@@ -31,7 +31,7 @@ router.post("/:id", isLoggedIn, async (req, res, next) => {
           name: "buyer",
         },
         {
-          type: "bytes32",
+          type: "bytes32[2]",
           name: "songCid",
         },
         {
@@ -42,7 +42,9 @@ router.post("/:id", isLoggedIn, async (req, res, next) => {
       receipt.logs[0].data,
       receipt.logs[0].topics
     );
-
+    logs.songCid = await web3.utils.hexToString(
+      logs.songCid[0] + logs.songCid[1].substr(2)
+    );
     const user = await User.findOne({
       where: { wallet: logs.buyer },
       attributes: ["id"],
