@@ -102,19 +102,33 @@ router.get("/chart", isLoggedIn, async (req, res, next) => {
   }
 
   try {
-    const result = await Music.findAll({
-      where: {
-        genre: genre,
-      },
-      attributes: [
-        "id",
-        "user_id",
-        "title",
-        "genre",
-        "artist",
-        ["cid1", "image"],
-      ],
-    });
+    let result;
+    if (genre == "All") {
+      result = await Music.findAll({
+        attributes: [
+          "id",
+          "user_id",
+          "title",
+          "genre",
+          "artist",
+          ["cid1", "image"],
+        ],
+      });
+    } else {
+      result = await Music.findAll({
+        where: {
+          genre: genre,
+        },
+        attributes: [
+          "id",
+          "user_id",
+          "title",
+          "genre",
+          "artist",
+          ["cid1", "image"],
+        ],
+      });
+    }
     const data = result.map((record) => record.toJSON());
     for (const element of data) {
       let chunks = [];
