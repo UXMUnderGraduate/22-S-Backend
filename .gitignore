@@ -103,5 +103,5 @@ dist
 # TernJS port file
 .tern-port
 
-# Configure folder
-config
+# Intellij IDEA folder
+.idea
