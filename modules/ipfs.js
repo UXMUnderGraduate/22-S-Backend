@@ -7,7 +7,7 @@ class IPFS {
 
   init() {
     try {
-      const instance = ipfs.create("http://localhost:5001");
+      const instance = ipfs.create(`http://${process.env.IPFS_HOST}:5001`);
       this.node = instance;
     } catch (err) {
       console.error(err);
