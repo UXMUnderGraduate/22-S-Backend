@@ -1,7 +1,7 @@
 const express = require("express");
 const IPFS = require("../modules/ipfs");
 const { isLoggedIn } = require("../middlewares/auth");
-const { Music, NFT } = require("../models");
+const { Music, NFT, UserNFT } = require("../models");
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ router.get("/hasMinted", isLoggedIn, async (req, res, next) => {
 
   try {
     const nft = await NFT.findAll({
-      where: { music_id: musicId },
+      where: { user_id: userId, music_id: musicId },
     });
 
     const data = {
@@ -19,13 +19,13 @@ router.get("/hasMinted", isLoggedIn, async (req, res, next) => {
     };
 
     return res.json({
-      message: "NFT 검색 성공",
+      message: "NFT 발행여부 조회 성공",
       data,
     });
   } catch (err) {
     console.error(err);
     return res.status(400).json({
-      message: "NFT 검색 실패",
+      message: "NFT 발행여부 조회 실패",
       data: {},
     });
   }
@@ -88,6 +88,140 @@ router.post("/meta", isLoggedIn, async (req, res, next) => {
     console.error(err);
     return res.status(400).json({
       message: "NFT 메타데이터 업로드 실패",
+      data: {},
+    });
+  }
+});
+
+router.post("/create", async (req, res, next) => {
+  const { musicId, cid, contractAddr, txId } = req.body;
+  const userId = req.user.id;
+
+  try {
+    // TODO: 트랜잭션 검증 로직 추가
+    const isValid = true;
+
+    if (!isValid) {
+      return res.status(400).json({
+        message: "NFT 생성 실패 - 컨트랙트 정보가 올바르지 않습니다.",
+        data: {},
+      });
+    }
+
+    const { id: nftId } = await NFT.create({
+      user_id: userId,
+      music_id: musicId,
+      contract_addr: contractAddr,
+      cid,
+    });
+
+    const { id: userNftId } = await UserNFT.create({
+      user_id: userId,
+      nft_id: nftId,
+      tx_id: txId,
+      is_sale: true,
+    });
+
+    return res.json({
+      message: "NFT 생성 성공",
+      data: {
+        nftId,
+        userNftId,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(400).json({
+      message: "NFT 생성 실패",
+      data: {},
+    });
+  }
+});
+
+router.post("/sell/:id", async (req, res, next) => {
+  const id = req.params.id;
+  const { txId } = req.body;
+  const userId = req.user.id;
+
+  try {
+    // TODO: 트랜잭션 검증 로직 추가
+    const isValid = true;
+
+    if (!isValid) {
+      return res.status(400).json({
+        message: "NFT 판매등록 실패 - 컨트랙트 정보가 올바르지 않습니다.",
+        data: {},
+      });
+    }
+
+    const userNft = await UserNFT.findOne({
+      where: { user_id: userId, id },
+    });
+    if (!userNft) {
+      return res.status(400).json({
+        message: "NFT 판매등록 실패 - 권한이 없습니다.",
+        data: {},
+      });
+    }
+
+    await UserNFT.update({ sell_tx: txId, is_sale: true }, { where: { id } });
+
+    return res.json({
+      message: "NFT 판매등록 성공",
+      data: {
+        id,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(400).json({
+      message: "NFT 판매등록 실패",
+      data: {},
+    });
+  }
+});
+
+router.post("/purchase/:id", async (req, res, next) => {
+  const id = req.params.id;
+  const { txId } = req.body;
+  const userId = req.user.id;
+
+  try {
+    // TODO: 트랜잭션 검증 로직 추가
+    const isValid = true;
+
+    if (!isValid) {
+      return res.status(400).json({
+        message: "NFT 구매 실패 - 컨트랙트 정보가 올바르지 않습니다.",
+        data: {},
+      });
+    }
+
+    const userNft = await UserNFT.findOne({
+      where: { id },
+    });
+    if (!userNft) {
+      return res.status(400).json({
+        message: "NFT 조회 실패",
+        data: {},
+      });
+    }
+
+    await UserNFT.update(
+      { user_id: userId, sell_tx: null, purchase_tx: txId, is_sale: false },
+      { where: { id } }
+    );
+
+    return res.json({
+      message: "NFT 구매 성공",
+      data: {
+        id,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(400).json({
+      message: "NFT 구매 실패",
       data: {},
     });
   }

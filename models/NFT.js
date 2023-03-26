@@ -16,6 +16,10 @@ module.exports = class NFT extends Sequelize.Model {
           type: Sequelize.STRING(255),
           allowNull: false,
         },
+        contract_addr: {
+          type: Sequelize.STRING(255),
+          allowNull: false,
+        },
       },
       {
         sequelize,
