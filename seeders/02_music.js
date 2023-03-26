@@ -91,7 +91,7 @@ module.exports = {
         genre: "Pop",
         artist: "Chris James",
         cid1: "QmberjDV3Y3WUbvjpMS2EEycMP9z2WcWR7iYQ79ZZgfZN5",
-        cid2: "QmaB3w6aGfsDs7CC3aeWUtPnMFHHuZ33yB6QRzKGTzB5PF",
+        cid2: "QmZLh8MmkF9TgBxnhrdCC9D64wwZvNULtACg9bczrbFSFX",
         cid3: "QmWivSrufNi2pVT3kxdJ9GehTDjjxwDZtjNvK1g2VPb4GV",
         sha1: "df6f9addab24bfa6d0d50a490d6442406c7fa1ec",
         address1: "0x75986f6Ec6A27fE66e78863DaB7111Ff9267e37b",

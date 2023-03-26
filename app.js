@@ -11,6 +11,7 @@ const seed = require("./seeders");
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const musicRouter = require("./routes/music");
+const nftRouter = require("./routes/nft");
 const uploadRouter = require("./routes/upload");
 const purchaseRouter = require("./routes/purchase");
 const cors = require("cors");
@@ -45,6 +46,7 @@ app.use("/api/v1/music", musicRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/upload", uploadRouter);
 app.use("/api/v1/purchase", purchaseRouter);
+app.use("/api/v1/nft", nftRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
