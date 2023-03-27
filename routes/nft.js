@@ -1,7 +1,8 @@
 const express = require("express");
 const IPFS = require("../modules/ipfs");
 const { isLoggedIn } = require("../middlewares/auth");
-const { Music, NFT, UserNFT } = require("../models");
+const { sequelize, Music, NFT, UserNFT } = require("../models");
+const { QueryTypes } = require("sequelize");
 
 const router = express.Router();
 
@@ -32,7 +33,7 @@ router.get("/hasMinted", isLoggedIn, async (req, res, next) => {
 });
 
 router.post("/meta", isLoggedIn, async (req, res, next) => {
-  const { musicId, propotion } = req.body;
+  const { musicId } = req.body;
   const userId = req.user.id;
   const node = IPFS.getInstance();
 
@@ -93,7 +94,7 @@ router.post("/meta", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.post("/create", async (req, res, next) => {
+router.post("/create", isLoggedIn, async (req, res, next) => {
   const { musicId, cid, contractAddr, txId } = req.body;
   const userId = req.user.id;
 
@@ -118,7 +119,7 @@ router.post("/create", async (req, res, next) => {
     const { id: userNftId } = await UserNFT.create({
       user_id: userId,
       nft_id: nftId,
-      tx_id: txId,
+      sell_tx: txId,
       is_sale: true,
     });
 
@@ -138,7 +139,7 @@ router.post("/create", async (req, res, next) => {
   }
 });
 
-router.post("/sell/:id", async (req, res, next) => {
+router.post("/sell/:id", isLoggedIn, async (req, res, next) => {
   const id = req.params.id;
   const { txId } = req.body;
   const userId = req.user.id;
@@ -164,7 +165,10 @@ router.post("/sell/:id", async (req, res, next) => {
       });
     }
 
-    await UserNFT.update({ sell_tx: txId, is_sale: true }, { where: { id } });
+    await UserNFT.update(
+      { sell_tx: txId, purchase_tx: null, is_sale: true },
+      { where: { id } }
+    );
 
     return res.json({
       message: "NFT 판매등록 성공",
@@ -181,7 +185,7 @@ router.post("/sell/:id", async (req, res, next) => {
   }
 });
 
-router.post("/purchase/:id", async (req, res, next) => {
+router.post("/purchase/:id", isLoggedIn, async (req, res, next) => {
   const id = req.params.id;
   const { txId } = req.body;
   const userId = req.user.id;
@@ -222,6 +226,58 @@ router.post("/purchase/:id", async (req, res, next) => {
     console.error(err);
     return res.status(400).json({
       message: "NFT 구매 실패",
+      data: {},
+    });
+  }
+});
+
+router.get("/list", isLoggedIn, async (req, res, next) => {
+  try {
+    const query = `
+      SELECT n.*
+      FROM nft n INNER JOIN user_nft un
+        WHERE n.id = un.nft_id AND un.is_sale = 1;
+    `;
+
+    const nfts = await sequelize.query(query, {
+      type: QueryTypes.SELECT,
+    });
+
+    return res.json({
+      message: "NFT 판매목록 조회 성공",
+      data: nfts,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(400).json({
+      message: "NFT 판매목록 조회 실패",
+      data: {},
+    });
+  }
+});
+
+router.get("/:id", async (req, res, next) => {
+  const id = req.params.id;
+
+  try {
+    const nft = await NFT.findOne({
+      where: { id },
+    });
+    if (!nft) {
+      return res.status(400).json({
+        message: "NFT 조회 실패",
+        data: {},
+      });
+    }
+
+    return res.json({
+      message: "NFT 조회 성공",
+      data: { ...nft },
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(400).json({
+      message: "NFT 조회 실패",
       data: {},
     });
   }
