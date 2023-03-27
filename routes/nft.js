@@ -231,12 +231,21 @@ router.post("/purchase/:id", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/list", isLoggedIn, async (req, res, next) => {
+router.get("/", isLoggedIn, async (req, res, next) => {
+  const { musicId } = req.query;
+
   try {
+    let conditions = "";
+    if (musicId) {
+      conditions += `AND n.music_id = ${musicId}`;
+    } else {
+      conditions += "AND un.is_sale = 1";
+    }
+
     const query = `
       SELECT n.*
       FROM nft n INNER JOIN user_nft un
-        WHERE n.id = un.nft_id AND un.is_sale = 1;
+        WHERE n.id = un.nft_id ${conditions};
     `;
 
     const nfts = await sequelize.query(query, {
@@ -256,7 +265,34 @@ router.get("/list", isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/my", isLoggedIn, async (req, res, next) => {
+  const userId = req.user.id;
+
+  try {
+    const query = `
+      SELECT n.*
+      FROM nft n INNER JOIN user_nft un
+        WHERE n.id = un.nft_id AND un.user_id = ${userId};
+    `;
+
+    const nfts = await sequelize.query(query, {
+      type: QueryTypes.SELECT,
+    });
+
+    return res.json({
+      message: "나의 NFT 판매목록 조회 성공",
+      data: nfts,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(400).json({
+      message: "나의 NFT 판매목록 조회 실패",
+      data: {},
+    });
+  }
+});
+
+router.get("/:id", isLoggedIn, async (req, res, next) => {
   const id = req.params.id;
 
   try {
