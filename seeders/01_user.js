@@ -144,6 +144,46 @@ module.exports = {
         nickname: "Oasis",
         wallet: "0x53BeD45e5E2387E1ed367E7c69342c72D8877Cf5",
       },
+      {
+        id: 15,
+        name: "testone",
+        email: "test@test1.com",
+        type: "Producer",
+        password:
+          "$2b$12$C1RfiFg2c2nR1BcBy9rYbOYKeN3DZ.Th/EJhGljDAceFJzWy3Ozo6",
+        nickname: "test1",
+        wallet: "0x2d4d860F81fdB19934fa3E9e4A7Cb4016c210976",
+      },
+      {
+        id: 16,
+        name: "testtestone",
+        email: "testtest1@t.com",
+        type: "General",
+        password:
+          "$2b$12$b.9oX9l6JnDDLtHqu6ha1ukxW9pnCuhAuhAUsoc.klTI.OJMPG2tO",
+        nickname: "test1",
+        wallet: "0x9a4eAdF9d570f783AAdD6537E9041C4c851eE929",
+      },
+      {
+        id: 17,
+        name: "testtesttwo",
+        email: "testtest2@t.com",
+        type: "Producer",
+        password:
+          "$2b$12$NLpfUSPE.oTpqrCUYlncy.vSjdkszW45x18APD22gW79ZVk40zMBi",
+        nickname: "testtest2",
+        wallet: "0xa1Ccb1FF58f5C25a66611BA0FB560468b3be4245",
+      },
+      {
+        id: 18,
+        name: "테스트테스트삼",
+        email: "testtest3@test.com",
+        type: "General",
+        password:
+          "$2b$12$oBilpXWi6YYQ/WfOCAIp7uz0f.esZyAyWilfFidrBEJ3KG/NiH68u",
+        nickname: "testtest3",
+        wallet: "0x023515f97C6350B18cec08b56879bE13D8e49112",
+      },
     ];
 
     await queryInterface.bulkInsert("user", bulk, {});
