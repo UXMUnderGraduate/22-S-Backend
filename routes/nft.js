@@ -129,7 +129,7 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
       }
       return true;
     };
-    const isValid = validate(cid, contractAddr, txId);
+    const isValid = await validate(cid, contractAddr, txId);
 
     if (!isValid) {
       return res.status(400).json({
@@ -186,7 +186,7 @@ router.post("/sell/:id", isLoggedIn, async (req, res, next) => {
         .call();
     };
 
-    const isValid = validate(txId);
+    const isValid = await validate(txId);
 
     if (!isValid) {
       return res.status(400).json({
@@ -244,7 +244,7 @@ router.post("/purchase/:id", isLoggedIn, async (req, res, next) => {
         return false;
       return true;
     };
-    const isValid = validate(txId);
+    const isValid = await validate(txId);
 
     if (!isValid) {
       return res.status(400).json({
