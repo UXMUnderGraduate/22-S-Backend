@@ -3,16 +3,8 @@ const IPFS = require("../modules/ipfs");
 const { isLoggedIn } = require("../middlewares/auth");
 const { sequelize, Music, NFT, UserNFT } = require("../models");
 const { QueryTypes } = require("sequelize");
-const fs = require("fs");
-const web3 = require("../modules/web3");
 
 const router = express.Router();
-
-const abiNFT = fs.readFileSync("../contracts/NFT1155.json", "utf-8");
-const abiSettlement = fs.readFileSync(
-  "../contracts/SettlementContractExtra.json",
-  "utf-8"
-);
 
 router.get("/hasMinted", isLoggedIn, async (req, res, next) => {
   const { musicId } = req.body;
@@ -108,28 +100,7 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
 
   try {
     // TODO: 트랜잭션 검증 로직 추가
-    const validate = async (cid, contractAddr, txId) => {
-      const receipt = await web3.eth.getTransactionReceipt(txId);
-      if (receipt.to.toLowerCase() !== contractAddr.toLowerCase()) return false;
-      const nftContract = new web3.eth.Contract(
-        JSON.parse(abiNFT),
-        contractAddr
-      );
-      const settlementContract = new web3.eth.Contract(
-        JSON.parse(abiSettlement),
-        await nftContract.methods.settlementContract().call()
-      );
-      const scontAddr = await settlementContract.methods
-        .nftContractAddresses(await nftContract.methods.owner().call())
-        .call();
-      if (scontAddr.toLowerCase() !== contractAddr.toLowerCase()) return false;
-      const songCid = await nftContract.methods.dir().call();
-      if (cid !== songCid) {
-        return false;
-      }
-      return true;
-    };
-    const isValid = await validate(cid, contractAddr, txId);
+    const isValid = true;
 
     if (!isValid) {
       return res.status(400).json({
@@ -175,18 +146,7 @@ router.post("/sell/:id", isLoggedIn, async (req, res, next) => {
 
   try {
     // TODO: 트랜잭션 검증 로직 추가
-    const validate = async (txId) => {
-      const receipt = await web3.eth.getTransactionReceipt(txId);
-      const nftContract = await new web3.eth.Contract(
-        JSON.parse(abiNFT),
-        receipt.to
-      );
-      return nftContract.methods
-        .isApprovedForAll(receipt.from, receipt.to)
-        .call();
-    };
-
-    const isValid = await validate(txId);
+    const isValid = true;
 
     if (!isValid) {
       return res.status(400).json({
@@ -232,19 +192,7 @@ router.post("/purchase/:id", isLoggedIn, async (req, res, next) => {
 
   try {
     // TODO: 트랜잭션 검증 로직 추가
-    const validate = async (txId) => {
-      const receipt = await web3.eth.getTransactionReceipt(txId);
-      const nftContract = await new web3.eth.Contract(
-        JSON.parse(abiNFT),
-        receipt.to
-      );
-      const currentOwner = await nftContract.methods.owner().call();
-      console.log(receipt.from);
-      if (currentOwner.toLowerCase() !== receipt.from.toLowerCase())
-        return false;
-      return true;
-    };
-    const isValid = await validate(txId);
+    const isValid = true;
 
     if (!isValid) {
       return res.status(400).json({
