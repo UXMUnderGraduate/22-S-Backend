@@ -110,7 +110,9 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
     // TODO: 트랜잭션 검증 로직 추가
     const validate = async (cid, contractAddr, txId) => {
       const receipt = await web3.eth.getTransactionReceipt(txId);
-      if (receipt.to.toLowerCase() !== contractAddr.toLowerCase()) return false;
+      if (receipt.to.toLowerCase() !== contractAddr.toLowerCase()) {
+        return false;
+      }
       const nftContract = new web3.eth.Contract(
         JSON.parse(abiNFT),
         contractAddr
@@ -122,7 +124,9 @@ router.post("/create", isLoggedIn, async (req, res, next) => {
       const scontAddr = await settlementContract.methods
         .nftContractAddresses(await nftContract.methods.owner().call())
         .call();
-      if (scontAddr.toLowerCase() !== contractAddr.toLowerCase()) return false;
+      if (scontAddr.toLowerCase() !== contractAddr.toLowerCase()) {
+        return false;
+      }
       const songCid = await nftContract.methods.dir().call();
       if (cid !== songCid) {
         return false;
@@ -240,8 +244,9 @@ router.post("/purchase/:id", isLoggedIn, async (req, res, next) => {
       );
       const currentOwner = await nftContract.methods.owner().call();
       console.log(receipt.from);
-      if (currentOwner.toLowerCase() !== receipt.from.toLowerCase())
+      if (currentOwner.toLowerCase() !== receipt.from.toLowerCase()) {
         return false;
+      }
       return true;
     };
     const isValid = await validate(txId);
