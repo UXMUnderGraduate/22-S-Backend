@@ -14,6 +14,7 @@ const musicRouter = require("./routes/music");
 const nftRouter = require("./routes/nft");
 const uploadRouter = require("./routes/upload");
 const purchaseRouter = require("./routes/purchase");
+const versionRouter = require("./routes/version");
 const cors = require("cors");
 
 const app = express();
@@ -47,6 +48,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/upload", uploadRouter);
 app.use("/api/v1/purchase", purchaseRouter);
 app.use("/api/v1/nft", nftRouter);
+app.use("/api/v1/version", versionRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
