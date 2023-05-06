@@ -3,16 +3,12 @@ const IPFS = require("../modules/ipfs");
 const { isLoggedIn } = require("../middlewares/auth");
 const { sequelize, Music, NFT, UserNFT } = require("../models");
 const { QueryTypes } = require("sequelize");
-const fs = require("fs");
 const web3 = require("../modules/web3");
 
 const router = express.Router();
 
-const abiNFT = fs.readFileSync("../contracts/NFT1155.json", "utf-8");
-const abiSettlement = fs.readFileSync(
-  "../contracts/SettlementContractExtra.json",
-  "utf-8"
-);
+const abiNFT = require("../contracts/NFT1155.json");
+const abiSettlement = require("../contracts/SettlementContractExtra.json");
 
 router.get("/hasMinted", isLoggedIn, async (req, res, next) => {
   const { musicId } = req.body;
